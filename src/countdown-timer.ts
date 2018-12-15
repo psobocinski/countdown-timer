@@ -14,12 +14,12 @@ class Duration {
 }
 
 export class CountdownTimer {
-  private startTime;
   private alottedSeconds;
+  private startTime;
 
-  constructor(startTime, alottedSeconds = null) {
-    this.startTime = startTime;
+  constructor(alottedSeconds, startTime) {
     this.alottedSeconds = alottedSeconds;
+    this.startTime = startTime;
   }
 
   public elapsedTime(readTime) {
@@ -29,8 +29,6 @@ export class CountdownTimer {
   }
 
   public remainingTime(readTime) {
-    if (!this.alottedSeconds) return null;
-
     let totalRemainingSeconds = this.totalRemainingSeconds(readTime);;
 
     return new Duration(totalRemainingSeconds);
