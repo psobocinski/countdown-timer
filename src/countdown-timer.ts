@@ -17,18 +17,18 @@ export class CountdownTimer {
   private alottedSeconds;
   private startTime;
 
-  constructor(alottedSeconds, startTime) {
+  constructor(alottedSeconds, startTime = new Date()) {
     this.alottedSeconds = alottedSeconds;
     this.startTime = startTime;
   }
 
-  public elapsedTime(readTime) {
+  public elapsedTime(readTime = new Date()) {
     let totalElapsedSeconds = this.totalElapsedSeconds(readTime);
 
     return new Duration(totalElapsedSeconds);
   }
 
-  public remainingTime(readTime) {
+  public remainingTime(readTime = new Date()) {
     let totalRemainingSeconds = this.totalRemainingSeconds(readTime);;
 
     return new Duration(totalRemainingSeconds);

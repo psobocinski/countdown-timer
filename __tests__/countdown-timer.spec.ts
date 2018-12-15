@@ -31,7 +31,7 @@ describe('Countdown Timer', () => {
 
   describe('alottedTime()', () => {
     test('returns alotted hours, minutes, and seconds', () => {
-      let timer = new CountdownTimer(3661, initialTime);
+      let timer = new CountdownTimer(3661);
 
       expect(timer.alottedTime()).toEqual({
         hours: 1,
