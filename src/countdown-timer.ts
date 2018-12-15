@@ -36,6 +36,10 @@ export class CountdownTimer {
     return new Duration(totalRemainingSeconds);
   }
 
+  public alottedTime() {
+    return new Duration(this.alottedSeconds);
+  }
+
   private totalRemainingSeconds(readTime) {
     return this.alottedSeconds - this.totalElapsedSeconds(readTime);
   }

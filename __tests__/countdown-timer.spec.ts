@@ -34,4 +34,16 @@ describe('Countdown Timer', () => {
       expect(timer.remainingTime(new Date())).toEqual(null);
     });
   });
+
+  describe('alottedTime()', () => {
+    test('returns alotted hours, minutes, and seconds', () => {
+      let timer = new CountdownTimer(initialTime, 3661);
+
+      expect(timer.alottedTime()).toEqual({
+        hours: 1,
+        minutes: 1,
+        seconds: 1
+      })
+    })
+  })
 });
