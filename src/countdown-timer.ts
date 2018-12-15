@@ -1,3 +1,18 @@
+class Duration {
+  public hours;
+  public minutes;
+  public seconds;
+
+  constructor(totalSeconds) {
+    let totalMinutes = totalSeconds / 60,
+        totalHours = totalMinutes / 60;
+
+    this.hours = Math.floor(totalHours);
+    this.minutes = Math.floor(totalMinutes % 60);
+    this.seconds = Math.floor(totalSeconds % 60);
+  }
+}
+
 export class CountdownTimer {
   private startTime;
   private alottedSeconds;
@@ -8,35 +23,21 @@ export class CountdownTimer {
   }
 
   public elapsedTime(readTime) {
-    let totalElapsedSeconds = this.totalElapsedSeconds(readTime),
-        totalElapsedMinutes = totalElapsedSeconds / 60,
-        totalElapsedHours = totalElapsedMinutes / 60,
-        displayedElapsedHours = Math.floor(totalElapsedHours),
-        displayedElapsedMinutes = Math.floor(totalElapsedMinutes % 60),
-        displayedElapsedSeconds = Math.floor(totalElapsedSeconds % 60);
+    let totalElapsedSeconds = this.totalElapsedSeconds(readTime);
 
-    return {
-      hours: displayedElapsedHours,
-      minutes: displayedElapsedMinutes,
-      seconds: displayedElapsedSeconds
-    }
+    return new Duration(totalElapsedSeconds);
   }
 
   public remainingTime(readTime) {
     if (!this.alottedSeconds) return null;
 
-    let totalRemainingSeconds = this.alottedSeconds - this.totalElapsedSeconds(readTime),
-        totalRemainingMinutes = totalRemainingSeconds / 60,
-        totalRemainingHours = totalRemainingMinutes / 60,
-        displayedRemainingHours = Math.floor(totalRemainingHours),
-        displayedRemainingMinutes = Math.floor(totalRemainingMinutes % 60),
-        displayedRemainingSeconds = Math.floor(totalRemainingSeconds % 60);
+    let totalRemainingSeconds = this.totalRemainingSeconds(readTime);;
 
-    return {
-      hours: displayedRemainingHours,
-      minutes: displayedRemainingMinutes,
-      seconds: displayedRemainingSeconds
-    }
+    return new Duration(totalRemainingSeconds);
+  }
+
+  private totalRemainingSeconds(readTime) {
+    return this.alottedSeconds - this.totalElapsedSeconds(readTime);
   }
 
   private totalElapsedSeconds(readTime) {
