@@ -1,8 +1,10 @@
 export class CountdownTimer {
   private startTime;
+  private alottedSeconds;
 
-  constructor(startTime) {
+  constructor(startTime, alottedSeconds = null) {
     this.startTime = startTime;
+    this.alottedSeconds = alottedSeconds;
   }
 
   public elapsedTime(readTime) {
@@ -17,6 +19,23 @@ export class CountdownTimer {
       hours: displayedElapsedHours,
       minutes: displayedElapsedMinutes,
       seconds: displayedElapsedSeconds
+    }
+  }
+
+  public remainingTime(readTime) {
+    if (!this.alottedSeconds) return null;
+
+    let totalRemainingSeconds = this.alottedSeconds - this.totalElapsedSeconds(readTime),
+        totalRemainingMinutes = totalRemainingSeconds / 60,
+        totalRemainingHours = totalRemainingMinutes / 60,
+        displayedRemainingHours = Math.floor(totalRemainingHours),
+        displayedRemainingMinutes = Math.floor(totalRemainingMinutes % 60),
+        displayedRemainingSeconds = Math.floor(totalRemainingSeconds % 60);
+
+    return {
+      hours: displayedRemainingHours,
+      minutes: displayedRemainingMinutes,
+      seconds: displayedRemainingSeconds
     }
   }
 
