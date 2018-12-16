@@ -1,11 +1,26 @@
 {
-  "scripts": {
-    "test": "jest"
-  },
+  "name": "countdown-timer",
+  "version": "1.0.0",
+  "description": "Countdown Timer built in Typescript + Jest",
+  "main": "src/countdown-timer.ts",
+  "dependencies": {},
   "devDependencies": {
     "@types/jest": "^23.3.9",
     "jest": "^23.6.0",
     "ts-jest": "^23.10.4",
     "typescript": "^3.1.6"
-  }
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/psobocinski/countdown-timer.git"
+  },
+  "author": "Paul Sobocinski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/psobocinski/countdown-timer/issues"
+  },
+  "homepage": "https://github.com/psobocinski/countdown-timer#readme"
 }
