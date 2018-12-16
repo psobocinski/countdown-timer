@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "outDir": "built"
+    "outDir": "built",
+    "target": "es2015"
   },
   "include": [
     "src/**/*"
