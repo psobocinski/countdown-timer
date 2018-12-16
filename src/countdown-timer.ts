@@ -1,17 +1,4 @@
-class Duration {
-  public hours;
-  public minutes;
-  public seconds;
-
-  constructor(totalSeconds) {
-    let totalMinutes = totalSeconds / 60,
-        totalHours = totalMinutes / 60;
-
-    this.hours = Math.floor(totalHours);
-    this.minutes = Math.floor(totalMinutes % 60);
-    this.seconds = Math.floor(totalSeconds % 60);
-  }
-}
+import { Duration } from '../src/duration';
 
 export class CountdownTimer {
   private alottedSeconds;
