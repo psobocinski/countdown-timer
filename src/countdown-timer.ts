@@ -6,10 +6,8 @@ export class CountdownTimer {
   private startTime;
   private state;
 
-  constructor(alottedSeconds, startTime = new Date()) {
+  constructor(alottedSeconds) {
     this.alottedSeconds = alottedSeconds;
-    this.startTime = startTime;
-    this.state = CountdownTimer.TimerStates.RUNNING;
   }
 
   public elapsedTime(readTime = new Date()) {
@@ -27,6 +25,11 @@ export class CountdownTimer {
 
   public alottedTime() {
     return new Duration(this.alottedSeconds);
+  }
+
+  public start(startTime = new Date()) {
+    this.startTime = startTime;
+    this.state = CountdownTimer.TimerStates.RUNNING;
   }
 
   public stop() {
