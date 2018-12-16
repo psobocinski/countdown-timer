@@ -13,46 +13,16 @@ export class CountdownTimer {
   }
 
   public elapsedTime(readTime = new Date()) {
-    let totalElapsedSeconds;
+    let totalElapsedSeconds = this.totalElapsedSeconds(readTime);
 
-    switch (this.state) {
-      case CountdownTimer.TimerStates.RUNNING:
-        totalElapsedSeconds = this.diffSeconds(readTime, this.startTime);
-        return new Duration(totalElapsedSeconds);
-
-      case CountdownTimer.TimerStates.PAUSED:
-        totalElapsedSeconds = this.diffSeconds(this.pauseTime, this.startTime);
-        return new Duration(totalElapsedSeconds);
-
-      case CountdownTimer.TimerStates.STOPPED:
-        return new Duration(0);
-
-      default:
-        throw new Error('Invalid CountdownTimer state');
-    }
+    return new Duration(totalElapsedSeconds);
   }
 
   public remainingTime(readTime = new Date()) {
-    let totalElapsedSeconds,
-        totalRemainingSeconds;
-
-    switch (this.state) {
-      case CountdownTimer.TimerStates.RUNNING:
-        totalElapsedSeconds = this.diffSeconds(readTime, this.startTime);
+    let totalElapsedSeconds = this.totalElapsedSeconds(readTime),
         totalRemainingSeconds = this.alottedSeconds - totalElapsedSeconds;
-        return new Duration(totalRemainingSeconds);
 
-      case CountdownTimer.TimerStates.PAUSED:
-        totalElapsedSeconds = this.diffSeconds(this.pauseTime, this.startTime);
-        totalRemainingSeconds = this.alottedSeconds - totalElapsedSeconds;
-        return new Duration(totalRemainingSeconds);
-
-      case CountdownTimer.TimerStates.STOPPED:
-        return this.alottedTime();
-
-      default:
-        throw new Error('Invalid CountdownTimer state');
-    }
+    return new Duration(totalRemainingSeconds);
   }
 
   public alottedTime() {
@@ -66,6 +36,22 @@ export class CountdownTimer {
   public pause(pauseTime = new Date()) {
    this.pauseTime = pauseTime;
    this.state = CountdownTimer.TimerStates.PAUSED;
+  }
+
+  private totalElapsedSeconds(readTime) {
+    switch (this.state) {
+      case CountdownTimer.TimerStates.RUNNING:
+        return this.diffSeconds(readTime, this.startTime);
+
+      case CountdownTimer.TimerStates.PAUSED:
+        return this.diffSeconds(this.pauseTime, this.startTime);
+
+      case CountdownTimer.TimerStates.STOPPED:
+        return 0;
+
+      default:
+        throw new Error('Invalid CountdownTimer state');
+    }
   }
 
   private diffSeconds(time1, time2) {
