@@ -15,33 +15,44 @@ export class CountdownTimer {
   public elapsedTime(readTime = new Date()) {
     let totalElapsedSeconds;
 
-    if (this.state === CountdownTimer.TimerStates.STOPPED)
-      return new Duration(0);
+    switch (this.state) {
+      case CountdownTimer.TimerStates.RUNNING:
+        totalElapsedSeconds = this.diffSeconds(readTime, this.startTime);
+        return new Duration(totalElapsedSeconds);
 
-    if (this.state === CountdownTimer.TimerStates.PAUSED) {
-       totalElapsedSeconds = (this.pauseTime - this.startTime) / 1000;
-    } else {
-      totalElapsedSeconds = this.totalElapsedSeconds(readTime);
+      case CountdownTimer.TimerStates.PAUSED:
+        totalElapsedSeconds = this.diffSeconds(this.pauseTime, this.startTime);
+        return new Duration(totalElapsedSeconds);
+
+      case CountdownTimer.TimerStates.STOPPED:
+        return new Duration(0);
+
+      default:
+        throw new Error('Invalid CountdownTimer state');
     }
-
-    return new Duration(totalElapsedSeconds);
   }
 
   public remainingTime(readTime = new Date()) {
-    let totalElapsedSeconds
-    let totalRemainingSeconds;
+    let totalElapsedSeconds,
+        totalRemainingSeconds;
 
-    if (this.state === CountdownTimer.TimerStates.STOPPED)
-      return this.alottedTime();
+    switch (this.state) {
+      case CountdownTimer.TimerStates.RUNNING:
+        totalElapsedSeconds = this.diffSeconds(readTime, this.startTime);
+        totalRemainingSeconds = this.alottedSeconds - totalElapsedSeconds;
+        return new Duration(totalRemainingSeconds);
 
-    if (this.state === CountdownTimer.TimerStates.PAUSED) {
-      totalElapsedSeconds = (this.pauseTime - this.startTime) / 1000;
-      totalRemainingSeconds = this.alottedSeconds - totalElapsedSeconds;
-    } else {
-      totalRemainingSeconds = this.totalRemainingSeconds(readTime);
+      case CountdownTimer.TimerStates.PAUSED:
+        totalElapsedSeconds = this.diffSeconds(this.pauseTime, this.startTime);
+        totalRemainingSeconds = this.alottedSeconds - totalElapsedSeconds;
+        return new Duration(totalRemainingSeconds);
+
+      case CountdownTimer.TimerStates.STOPPED:
+        return this.alottedTime();
+
+      default:
+        throw new Error('Invalid CountdownTimer state');
     }
-
-    return new Duration(totalRemainingSeconds);
   }
 
   public alottedTime() {
@@ -57,12 +68,8 @@ export class CountdownTimer {
    this.state = CountdownTimer.TimerStates.PAUSED;
   }
 
-  private totalRemainingSeconds(readTime) {
-    return this.alottedSeconds - this.totalElapsedSeconds(readTime);
-  }
-
-  private totalElapsedSeconds(readTime) {
-    return (readTime - this.startTime) / 1000
+  private diffSeconds(time1, time2) {
+    return (time1 - time2) / 1000;
   }
 
   static TimerStates = class {
