@@ -69,4 +69,34 @@ describe('Countdown Timer', () => {
       });
     });
   });
+
+  describe('pause()', () => {
+    test('freezes elapsedTime at paused time', () => {
+      let timer = new CountdownTimer(3661, initialTime),
+          timeAfter5secs = new Date(2000, 0, 1, 0, 0, 5),
+          timeAfter10secs = new Date(2000, 0, 1, 0, 0, 10);
+
+      timer.pause(timeAfter5secs);
+
+      expect(timer.elapsedTime(timeAfter10secs)).toEqual({
+        hours: 0,
+        minutes: 0,
+        seconds: 5
+      });
+    });
+
+    test('freezes remainingTime at paused time', () => {
+      let timer = new CountdownTimer(3660, initialTime),
+          timeAfter5secs = new Date(2000, 0, 1, 0, 0, 5),
+          timeAfter10secs = new Date(2000, 0, 1, 0, 0, 10);
+
+      timer.pause(timeAfter5secs);
+
+      expect(timer.remainingTime(timeAfter10secs)).toEqual({
+        hours: 1,
+        minutes: 0,
+        seconds: 55
+      });
+    });
+  });
 });

@@ -2,6 +2,7 @@ import { Duration } from '../src/duration';
 
 export class CountdownTimer {
   private alottedSeconds;
+  private pauseTime;
   private startTime;
   private state;
 
@@ -12,19 +13,33 @@ export class CountdownTimer {
   }
 
   public elapsedTime(readTime = new Date()) {
+    let totalElapsedSeconds;
+
     if (this.state === CountdownTimer.TimerStates.STOPPED)
       return new Duration(0);
 
-    let totalElapsedSeconds = this.totalElapsedSeconds(readTime);
+    if (this.state === CountdownTimer.TimerStates.PAUSED) {
+       totalElapsedSeconds = (this.pauseTime - this.startTime) / 1000;
+    } else {
+      totalElapsedSeconds = this.totalElapsedSeconds(readTime);
+    }
 
     return new Duration(totalElapsedSeconds);
   }
 
   public remainingTime(readTime = new Date()) {
+    let totalElapsedSeconds
+    let totalRemainingSeconds;
+
     if (this.state === CountdownTimer.TimerStates.STOPPED)
       return this.alottedTime();
 
-    let totalRemainingSeconds = this.totalRemainingSeconds(readTime);;
+    if (this.state === CountdownTimer.TimerStates.PAUSED) {
+      totalElapsedSeconds = (this.pauseTime - this.startTime) / 1000;
+      totalRemainingSeconds = this.alottedSeconds - totalElapsedSeconds;
+    } else {
+      totalRemainingSeconds = this.totalRemainingSeconds(readTime);
+    }
 
     return new Duration(totalRemainingSeconds);
   }
@@ -37,6 +52,11 @@ export class CountdownTimer {
     this.state = CountdownTimer.TimerStates.STOPPED;
   }
 
+  public pause(pauseTime = new Date()) {
+   this.pauseTime = pauseTime;
+   this.state = CountdownTimer.TimerStates.PAUSED;
+  }
+
   private totalRemainingSeconds(readTime) {
     return this.alottedSeconds - this.totalElapsedSeconds(readTime);
   }
@@ -46,7 +66,8 @@ export class CountdownTimer {
   }
 
   static TimerStates = class {
-    static RUNNING = Symbol('running');
+    static PAUSED = Symbol('paused');
+    static RUNNING = Symbol('started');
     static STOPPED = Symbol('stopped');
   }
 }
