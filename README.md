@@ -7,7 +7,6 @@ Simple app built in Typescript + Jest
 1. Install: `npm i`
 2. Run tests: `npm t -- --watchAll`
 
-## Build and Launch App
+## Build Library
 
 1. Compile TypeScript: `npx tsc`
-2. Open in browser: `open greeter.html`
